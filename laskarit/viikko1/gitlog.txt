@@ -1,0 +1,56 @@
+commit bcec02b926c4a12236cfb169bc2b532f33bdead3
+Author: Helene Ilvonen <helene.ilvonen@helsinki.fi>
+Date:   Tue Nov 2 16:08:03 2021 +0200
+
+    uudelleennimetty tiedosto
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ tiedostoja/file3             | 1 +
+ 3 files changed, 1 insertion(+)
+
+commit 25c274f02b1ebc3bf390573ddc2478c8519b8432
+Author: Helene Ilvonen <helene.ilvonen@helsinki.fi>
+Date:   Tue Nov 2 15:57:40 2021 +0200
+
+    tiedostojen lisäys
+
+ tiedosto.txt => eka.txt | 0
+ tiedostoja/file1        | 0
+ tiedostoja/file2        | 0
+ tiedostoja/file3        | 0
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 8f05dd7b9db0d1c36e5e88c7b1e37ba83224b5b7
+Author: Helene Ilvonen <helene.ilvonen@helsinki.fi>
+Date:   Mon Nov 1 22:01:28 2021 +0200
+
+    poisto ja nimenvaihto
+
+ toinen.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit f0aa4d8e1a102a661a3e941d85b15165a4ebf24c
+Author: Helene Ilvonen <helene.ilvonen@helsinki.fi>
+Date:   Mon Nov 1 21:57:38 2021 +0200
+
+    kolmas.txt
+
+ kolmas.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 1ccad0ecb4bf33d05fb2b74cd3bb18a91a9beb40
+Author: Helene Ilvonen <helene.ilvonen@helsinki.fi>
+Date:   Mon Nov 1 21:55:39 2021 +0200
+
+    kolmas.txt
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit dcb0070a1a530133209d7bf88370396fba8d2d9d
+Author: Helene Ilvonen <helene.ilvonen@helsinki.fi>
+Date:   Mon Nov 1 17:26:45 2021 +0200
+
+    muutos ja lisäys
+
