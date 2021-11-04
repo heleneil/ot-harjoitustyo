@@ -54,3 +54,4 @@ Date:   Mon Nov 1 17:26:45 2021 +0200
 
     muutos ja lisäys
 
+muutos suoraan githubista
