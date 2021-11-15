@@ -2,7 +2,7 @@
 
 ## Purpose
 
-In the app users can create notes and edit them. To make notes the first-time user must create an account with a username and a password.
+In the app users can create notes and edit them. To make notes the first-time user must create an account with a username.
 
 ## Description: Basic function
 
@@ -12,7 +12,7 @@ In the app users can create notes and edit them. To make notes the first-time us
   * the username must not exist in the database already
 
 * the user can log in after creating a valid username
-  * a successful login requires an existant username
+  * a successful login requires an existent username
   * username invalid notification
 
 ###### Signed in
@@ -29,7 +29,7 @@ In the app users can create notes and edit them. To make notes the first-time us
 ## Ideas for further development
 
 * improving the UI
-* käyttäjän poisto
+* remove user option
 * adding links and images
 * making a checklist
 * login requires password
