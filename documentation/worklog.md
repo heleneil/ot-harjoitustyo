@@ -1,6 +1,6 @@
 # Worklog
 
-| date | hours | task |
+| Date | Hours | Task |
 | --- | --- | --- |
 | 12.11. | 1 | SRS-file |
 | 16.11. | 2 | Learning about Tkinter |
