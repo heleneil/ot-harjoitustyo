@@ -11,7 +11,7 @@ In the app users can create notes and edit them. To make notes the first-time us
 * the user can create a username
   * the username must not exist in the database already
 
-* the user can log in after creating a valid username
+* [x] the user can log in after creating a valid username (only with one of the usernames that already exist in the csv-file for now) 
   * a successful login requires an existent username
   * username invalid notification
 
