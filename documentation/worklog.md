@@ -10,4 +10,4 @@
 | 28.11. | 4 | Coding UI |
 | 29.11. | 6 | Login funct. |
 | 30.11. | 10 | Cont. login + csv-file 
-| total | 13.5 |   |
+| total | 33.5 |   |
