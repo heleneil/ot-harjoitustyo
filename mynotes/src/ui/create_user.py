@@ -3,14 +3,12 @@ from tkinter import Tk, ttk
 
 
 class CreateUser(tk.Frame):
-    users = []
-    notes = []
     reference_frames = {}
     reference_functions = {}
 
-    def init_data(self, users, notes):
-        self.users = users
-        self.notes = notes
+    def init_data(self, reference_frames, reference_functions):
+        self.reference_frames = reference_frames
+        self.reference_functions = reference_functions
 
     def __init__(self, parent, controller):
 
@@ -34,9 +32,18 @@ class CreateUser(tk.Frame):
         create_button = ttk.Button(
             self,
             text="Create",
-            command=lambda: controller.show_frame(
-                self.reference_frames['home_view_instance']
-                )
+            command=lambda: self.create_user_and_switch_page(
+                controller,
+                username_field.get()
+            )
         )
 
         create_button.grid(row=3, column=0, columnspan=2)
+
+    def create_user_and_switch_page(self, controller, username):
+        user_created = self.reference_functions['create_user'](
+            username)
+        if user_created:
+            controller.show_frame(
+                self.reference_frames['home_view_instance']
+                )

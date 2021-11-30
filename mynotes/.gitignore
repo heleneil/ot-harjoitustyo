@@ -1,3 +1,7 @@
 .pytest_cache
 .vscode
 /src/__pycache__
+/src/db/__pycache__
+/src/ui/__pycache__
+.DS_Store
+.coverage

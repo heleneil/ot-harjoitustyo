@@ -1,16 +1,14 @@
 import tkinter as tk
-from tkinter import Tk, ttk
+from tkinter import ttk
 
 
 class Home(tk.Frame):
-    users = []
-    notes = []
     reference_frames = {}
     reference_functions = {}
 
-    def init_data(self, users, notes):
-        self.users = users
-        self.notes = notes
+    def init_data(self, reference_frames, reference_functions):
+        self.reference_frames = reference_frames
+        self.reference_functions = reference_functions
 
     def __init__(self, parent, controller):
 
@@ -25,8 +23,8 @@ class Home(tk.Frame):
         create_note_button.grid(row=3, column=0, columnspan=2)
 
         # making sure notes mock data is initialized
-        test_notes_exist = ttk.Label(
+        '''test_notes_exist = ttk.Label(
             master=self,
-            text=f"The first note is: {self.notes[0].title}"
+            text=f"The first note is: {get_notes_.title}"
         )
-        test_notes_exist.grid(row=4, column=0, columnspan=2)
+        test_notes_exist.grid(row=4, column=0, columnspan=2)'''
