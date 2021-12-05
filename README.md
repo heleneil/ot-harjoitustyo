@@ -31,7 +31,7 @@ The app is programmed and tested using Python version ```3.10```.
 
 ###### Coverage report
 
-```poetry run invoke coverage_report```
+```poetry run invoke coverage```
 
 ###### Pylint
 
