@@ -9,5 +9,7 @@
 | 23.11. | 1.5 | Test |
 | 28.11. | 4 | Coding UI |
 | 29.11. | 6 | Login funct. |
-| 30.11. | 10 | Cont. login + csv-file 
-| total | 33.5 |   |
+| 30.11. | 10 | Cont. login + csv-file |
+| 5.12. | 2 | Changed structure |
+| 7.12 | 8 | Create user + read from notes.csv |
+| total | 43.5 |   |
