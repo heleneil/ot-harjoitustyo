@@ -2,6 +2,8 @@
 
 In the app users can create notes and edit them. To make notes the user must log into their account.
 
+[Release](https://github.com/heleneil/ot-harjoitustyo/releases/tag/viikko5)
+
 ## Python version
 
 The app is programmed and tested using Python version ```3.10```.
