@@ -1,101 +1,144 @@
 import tkinter as tk
-from ui.home_view import Home
-from ui.login_view import Login
-from ui.create_user import CreateUser
-from models.mock_models import read_users_from_file
-
-HEIGHT = 600
-WIDTH = 400
-FONT = ("Arial", 24)
+from tkinter import ttk
 
 
-class MyNotesApp(tk.Tk):
+class Login(tk.Frame):
+    def __init__(self, parent, controller):
 
-    def __init__(self, *args, **kwargs):
+        tk.Frame.__init__(self, parent)
 
-        tk.Tk.__init__(self, *args, **kwargs)
+        # TODO: handle grid through pack()
+        title_label = ttk.Label(master=self, text="Log in")
 
-        self.geometry(f"{WIDTH}x{HEIGHT}")
-        self.title(" MyNotes ")
-        container = tk.Frame(self)
-        container.pack(side="top", fill="both", expand=True)
+        username_label = ttk.Label(master=self, text="Username")
+        username_field = ttk.Entry(master=self)
 
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
-
-        home_view_instance = Home
-        create_user_instance = CreateUser
-        login_view_instance = Login
-
-        # passing data to each frame,
-        # while I have a mock db made from python objects
-        load_frame_data(
-            home_view_instance,
-            reference_frames={},
-            reference_functions={}
-        )
-        load_frame_data(
-            create_user_instance,
-            reference_frames={
-                "home_view_instance": home_view_instance,
-                "login_view_instance": login_view_instance,
-            },
-            reference_functions={
-                "create_user": create_user
-            }
-        )
-        load_frame_data(
-            login_view_instance,
-            reference_frames={
-                "home_view_instance": home_view_instance,
-                "create_user_instance": create_user_instance
-            },
-            reference_functions={
-                "validate_login": validate_login
-            }
+        login_button = ttk.Button(
+            self,
+            text="Log In",
+            command=lambda: self.validate_and_switch_pages(
+                controller,
+                username_field.get()
+                )
         )
 
-        self.frames = {}
-        for F in (
-            login_view_instance,
-            create_user_instance,
-            home_view_instance
-        ):
-            frame = F(container, self)
-            self.frames[F] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
+        title_label.grid(row=0, column=0, columnspan=2)
 
-        self.show_frame(login_view_instance)
+        username_label.grid(row=1, column=0)
+        username_field.grid(row=1, column=1)
 
-    def show_frame(self, cont):
-        if cont not in self.frames:
-            self.frames[cont] = cont(self.container, self)
-        frame = self.frames[cont]
-        frame.tkraise()
-        frame.event_generate("<<ShowFrame>>")
+        login_button.grid(row=3, column=0, columnspan=2)
 
+        create_user_button = ttk.Button(
+            self,
+            text="Create user",
+            command=lambda: controller.show_frame(CreateUser)
+        )
 
-def load_frame_data(
-        frame, reference_frames, reference_functions):
-    frame.init_data(frame, reference_frames, reference_functions)
+        create_user_button.grid(row=4, column=0, columnspan=2)
 
-
-def validate_login(username):
-    for user in read_users_from_file():
-        if user.username == username:
-            return True
-    return False
+    def validate_and_switch_pages(self, controller, username):
+        validated_user = controller.validate_login(username)
+        if validated_user is not None:
+            controller.set_session_user(validated_user)
+            controller.show_frame(Home)
+        else:
+            invalid_username_label = ttk.Label(
+                master=self, text="Invalid username", foreground='red')
+            invalid_username_label.grid(row=2, column=0, columnspan=2)
 
 
-def create_user(username):
-    user_exists = validate_login(username)
-    if user_exists is False:
-        # new_user = create_new_user(username)
-        # TODO: write to file
-        return True
-    return False
+class CreateUser(tk.Frame):
+    def __init__(self, parent, controller):
+
+        tk.Frame.__init__(self, parent)
+
+        title_label = ttk.Label(master=self, text="Create user")
+        title_label.grid(row=0, column=0, columnspan=2)
+
+        username_label = ttk.Label(master=self, text="Username:")
+
+        username_label.grid(row=2, column=0, columnspan=2)
+
+        username_field = ttk.Entry(master=self)
+        username_field.grid(row=2, column=2, columnspan=2)
+
+        username_error_label = None
+
+        create_button = ttk.Button(
+            self,
+            text="Create and sign in",
+            command=lambda: self.create_user_and_switch_page(
+                controller,
+                username_field.get(),
+                username_error_label,
+            )
+        )
+
+        create_button.grid(row=4, column=0, columnspan=2)
+
+    def create_user_and_switch_page(
+        self,
+        controller,
+        username,
+        username_error_label
+    ):
+        user_created_error = controller.create_user(
+            username,
+
+            # set the session user on success
+            do_on_success=controller.set_session_user)
+        if user_created_error is not None:
+            username_error_label = ttk.Label(
+                master=self, text=user_created_error, foreground='red')
+            username_error_label.grid(row=3, column=0, columnspan=2)
+            return
+
+        # if no errors show homepage
+        controller.show_frame(Home)
 
 
-def build_my_notes_app():
-    myNotesApp = MyNotesApp()
-    myNotesApp.mainloop()
+class Home(tk.Frame):
+    def __init__(self, parent, controller):
+
+        tk.Frame.__init__(self, parent)
+
+        title_label = ttk.Label(
+            master=self,
+            text=f"MyNotes\nHello {controller.session_user.username}")
+
+        title_label.grid(row=0, column=0, columnspan=2)
+
+        create_note_button = ttk.Button(
+            self,
+            text="New note",
+            command=lambda: controller.show_frame(Note)
+        )
+
+        create_note_button.grid(row=3, column=0, columnspan=2)
+
+
+class Note(tk.Frame):
+    def __init__(self, parent, controller):
+
+        tk.Frame.__init__(self, parent)
+
+        back_button = ttk.Button(
+            self,
+            text="Back",
+            command=lambda: controller.show_frame(Home)
+        )
+
+        back_button.grid(row=0, column=0, columnspan=3)
+
+        title_label = ttk.Label(master=self, text="Title")
+
+        title_label.grid(row=1, column=1, columnspan=3)
+
+        title_field = ttk.Entry(master=self)
+
+        title_field.grid(row=1, column=2, columnspan=3)
+
+        note_field = ttk.Entry(master=self)
+
+        note_field.grid(row=2, column=0, columnspan=3)

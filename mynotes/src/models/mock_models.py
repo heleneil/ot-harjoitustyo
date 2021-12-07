@@ -44,6 +44,20 @@ def read_users_from_file():
     return users
 
 
+def write_user_to_file(username):
+    p = Path(__file__).with_name('users.csv')
+
+    users = read_users_from_file()
+    last_user = users[-1]
+
+    file = p.open("a")
+    writer = csv.writer(file)
+    row = [str(int(last_user.id)+1), username]
+    writer.writerow(row)
+    file.close()
+    return User(str(int(last_user.id)+1), username)
+
+
 def init_notes(total_notes, user_id):
     for x in range(3):
         temp_note = Note()
