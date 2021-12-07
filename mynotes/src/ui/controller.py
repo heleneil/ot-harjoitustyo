@@ -1,6 +1,6 @@
 import tkinter as tk
 from ui.views import Login, CreateUser, Home, Note
-from models.mock_models import User, read_users_from_file, write_user_to_file
+from models.mock_models import User, read_notes_from_file_for_user, read_users_from_file, write_user_to_file
 
 HEIGHT = 600
 WIDTH = 400
@@ -22,6 +22,10 @@ class MyNotesApp(tk.Tk):
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 
+        self.init_frames()
+        self.show_frame(Login)
+
+    def init_frames(self):
         self.frames = {}
         for F in (
             Home,
@@ -33,8 +37,6 @@ class MyNotesApp(tk.Tk):
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame(Login)
-
     def show_frame(self, container):
         if container not in self.frames:
             self.frames[container] = container(self.container, self)
@@ -44,6 +46,7 @@ class MyNotesApp(tk.Tk):
 
     def set_session_user(self, user):
         self.session_user = user
+        self.init_frames()
         print(f"The session user is now {self.session_user.username}")
 
     def validate_login(self, username):
@@ -51,7 +54,7 @@ class MyNotesApp(tk.Tk):
             if user.username == username:
                 return user
 
-    def create_user(self, username, do_on_success=None):
+    def create_user(self, username):
         user_exists = self.validate_login(username)
         if user_exists is not None:
             return "User already exists"
@@ -60,10 +63,10 @@ class MyNotesApp(tk.Tk):
 
         # if no errors, then
         new_user = write_user_to_file(username)
+        self.set_session_user(new_user)
 
-        # calling a possible function passed in from the view instance that
-        # calls create_user (ie. setting this user as session user)
-        do_on_success(new_user)
+    def get_notes(self):
+        return read_notes_from_file_for_user(self.session_user)
 
 
 def build_my_notes_app():

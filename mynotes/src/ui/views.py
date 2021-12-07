@@ -83,11 +83,7 @@ class CreateUser(tk.Frame):
         username,
         username_error_label
     ):
-        user_created_error = controller.create_user(
-            username,
-
-            # set the session user on success
-            do_on_success=controller.set_session_user)
+        user_created_error = controller.create_user(username)
         if user_created_error is not None:
             username_error_label = ttk.Label(
                 master=self, text=user_created_error, foreground='red')
@@ -116,6 +112,13 @@ class Home(tk.Frame):
         )
 
         create_note_button.grid(row=3, column=0, columnspan=2)
+
+        for idx, note in enumerate(controller.get_notes()):
+            note_label = ttk.Label(
+                master=self,
+                text=f"{note.title}\n{note.content}")
+
+            note_label.grid(row=(idx + 5), column=0, columnspan=2)
 
 
 class Note(tk.Frame):
