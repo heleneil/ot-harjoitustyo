@@ -12,4 +12,6 @@
 | 30.11. | 10 | Cont. login + csv-file |
 | 5.12. | 2 | Changed structure |
 | 7.12 | 8 | Create user + read from notes.csv |
-| total | 43.5 |   |
+| 12.12 | 6 | Creating notes functionality |
+| 14.12 | 6 | Fixing tests + docstring |
+| total | 55.5 |   |
