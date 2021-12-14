@@ -19,3 +19,4 @@ def pylint(ctx):
 @task
 def coverage(ctx):
     ctx.run("coverage run --branch -m pytest src")
+    ctx.run("coverage html")

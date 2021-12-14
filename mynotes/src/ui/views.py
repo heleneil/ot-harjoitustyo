@@ -1,5 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import Text
+
+from models.models import write_note_to_file
 
 
 class Login(tk.Frame):
@@ -116,7 +119,7 @@ class Home(tk.Frame):
         for idx, note in enumerate(controller.get_notes()):
             note_label = ttk.Label(
                 master=self,
-                text=f"{note.title}\n{note.content}")
+                text=f"{note.title}")
 
             note_label.grid(row=(idx + 5), column=0, columnspan=2)
 
@@ -134,14 +137,39 @@ class Note(tk.Frame):
 
         back_button.grid(row=0, column=0, columnspan=3)
 
+        save_button = ttk.Button(
+            self,
+            text="Save",
+            command=lambda: self.create_note_and_switch_page(
+                controller,
+                title_field.get(),
+                note_field.get("1.0", "end-1c")
+            )
+        )
+
+        save_button.grid(row=0, column=3, columnspan=3)
+
         title_label = ttk.Label(master=self, text="Title")
 
-        title_label.grid(row=1, column=1, columnspan=3)
+        title_label.grid(row=1, column=0)
 
         title_field = ttk.Entry(master=self)
 
-        title_field.grid(row=1, column=2, columnspan=3)
+        title_field.grid(row=1, column=1)
 
-        note_field = ttk.Entry(master=self)
+        note_field = Text(self, height=5, width=10)
 
-        note_field.grid(row=2, column=0, columnspan=3)
+        note_field.grid(row=2, column=1)
+
+    def create_note_and_switch_page(
+        self,
+        controller,
+        title,
+        content
+    ):
+        # replace all the "enter" chars with something
+        content = content.replace("\n", " ")
+        new_note = write_note_to_file(
+            title, content, controller.session_user.id)
+        controller.set_notes(controller.get_notes().append(new_note))
+        controller.show_frame(Home)

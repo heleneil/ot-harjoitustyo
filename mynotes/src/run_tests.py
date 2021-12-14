@@ -1,4 +1,4 @@
 import unittest
-from tests import ui_test
+from tests import user_test
 
-unittest.main(module=ui_test)
+unittest.main(module=user_test)

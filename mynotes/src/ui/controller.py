@@ -1,6 +1,6 @@
 import tkinter as tk
 from ui.views import Login, CreateUser, Home, Note
-from models.mock_models import User, read_notes_from_file_for_user, read_users_from_file, write_user_to_file
+from models.models import User, read_notes_from_file_for_user, read_users_from_file, write_user_to_file
 
 HEIGHT = 600
 WIDTH = 400
@@ -9,7 +9,12 @@ FONT = ("Arial", 24)
 
 class MyNotesApp(tk.Tk):
 
+    """This class contains the program logic
+
+    """
+
     session_user = User('', '')
+    loaded_notes = []
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -38,6 +43,12 @@ class MyNotesApp(tk.Tk):
             frame.grid(row=0, column=0, sticky="nsew")
 
     def show_frame(self, container):
+        """Shows the frame instance for a given generic view class
+
+        Args:
+            container: one of the view classes
+        """
+
         if container not in self.frames:
             self.frames[container] = container(self.container, self)
         frame = self.frames[container]
@@ -47,26 +58,40 @@ class MyNotesApp(tk.Tk):
     def set_session_user(self, user):
         self.session_user = user
         self.init_frames()
-        print(f"The session user is now {self.session_user.username}")
 
     def validate_login(self, username):
+        """Checks the file containing users and makes sure it exists
+
+        Args:
+            username: the username that has been entered in the username field
+        """
+
         for user in read_users_from_file():
             if user.username == username:
                 return user
+        return None
 
     def create_user(self, username):
         user_exists = self.validate_login(username)
         if user_exists is not None:
             return "User already exists"
         if len(username) < 3:
-            return "Username is too short"
+            return "Username too short"
 
         # if no errors, then
         new_user = write_user_to_file(username)
         self.set_session_user(new_user)
+        return None
 
     def get_notes(self):
-        return read_notes_from_file_for_user(self.session_user)
+        if self.loaded_notes is None or len(self.loaded_notes) == 0:
+            loaded_notes = read_notes_from_file_for_user(self.session_user)
+            self.loaded_notes = loaded_notes
+        return self.loaded_notes
+
+    def set_notes(self, notes):
+        self.loaded_notes = notes
+        self.init_frames()
 
 
 def build_my_notes_app():
