@@ -9,6 +9,7 @@ In the app users can create notes and edit them. To make notes the user must log
 The app is programmed and tested using Python version ```3.10```.
 
 ## Documentation
+- [Instructions](https://github.com/heleneil/ot-harjoitustyo/blob/master/documentation/instructions.md)
 - [Software requirements specification](https://github.com/heleneil/ot-harjoitustyo/blob/master/documentation/SRS.md)
 - [Worklog](https://github.com/heleneil/ot-harjoitustyo/blob/master/documentation/worklog.md)
 - [Architecture](https://github.com/heleneil/ot-harjoitustyo/blob/master/documentation/architecture.md)
