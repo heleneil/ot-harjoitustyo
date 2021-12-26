@@ -2,9 +2,9 @@
 
 ## Structure
 
-Package diagram (old):
+Package diagram:
 
-<img width="677" alt="mynotes_architecture" src="https://user-images.githubusercontent.com/93551356/144108880-1dd06030-e239-4474-837a-5546255af658.png">
+<img width="485" alt="Screenshot 2021-12-26 at 22 03 38" src="https://user-images.githubusercontent.com/93551356/147418957-6690f7c5-4f8c-41db-ab30-fb23e3eee7e5.png">
 
 ## UI
 
