@@ -44,6 +44,20 @@ def write_user_to_file(username):
     return User(str(int(last_user.id)+1), username)
 
 
+def delete_user_from_file(user):
+    lines = []
+
+    p = Path(__file__).with_name('users.csv')
+    with open(p, 'r') as read_file:
+        reader = csv.reader(read_file)
+        for row in reader:
+            if row[0] != user.id:
+                lines.append(row)
+    with open(p, 'w') as write_file:
+        writer = csv.writer(write_file)
+        writer.writerows(lines)
+
+
 def read_notes_from_file():
     p = Path(__file__).with_name('notes.csv')
     with p.open('r') as file:
@@ -74,7 +88,7 @@ def read_notes_from_file_for_user(user):
     return notes
 
 
-def write_note_to_file(title, content, user_id):
+def write_note_to_file(note):
     p = Path(__file__).with_name('notes.csv')
 
     notes = read_notes_from_file()
@@ -82,7 +96,28 @@ def write_note_to_file(title, content, user_id):
 
     file = p.open("a")
     writer = csv.writer(file)
-    row = [str(int(last_note.id)+1), title, content, user_id]
+    row = [str(int(last_note.id)+1), note.title, note.content, note.user_id]
     writer.writerow(row)
     file.close()
-    return Note(str(int(last_note.id)+1), title, content, user_id)
+    note.id = str(int(last_note.id)+1)
+    return note
+
+
+def delete_note_from_file(note):
+    lines = []
+
+    p = Path(__file__).with_name('notes.csv')
+    with open(p, 'r') as read_file:
+        reader = csv.reader(read_file)
+        for row in reader:
+            if row[0] != note.id:
+                lines.append(row)
+    with open(p, 'w') as write_file:
+        writer = csv.writer(write_file)
+        writer.writerows(lines)
+
+
+def update_note_in_file(note):
+    delete_note_from_file(note)
+    write_note_to_file(note)
+    return note

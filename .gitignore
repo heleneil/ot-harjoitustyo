@@ -7,3 +7,5 @@ mynotes/.coverage
 **/__pycache__
 **/.pytest_cache
 __pycache__/
+/Users/heleneilvonen/ot-harjoitustyo/mynotes/src/tests/__pycache__
+/Users/heleneilvonen/ot-harjoitustyo/mynotes/src/ui/__pycache__

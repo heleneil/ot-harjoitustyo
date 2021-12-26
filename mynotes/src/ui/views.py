@@ -2,15 +2,17 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import Text
 
-from models.models import write_note_to_file
+from models.models import Note as NoteObject, delete_note_from_file
 
 
 class Login(tk.Frame):
+
+    """This class contains the elements of the login frame
+
+    """
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
-
-        # TODO: handle grid through pack()
         title_label = ttk.Label(master=self, text="Log in")
 
         username_label = ttk.Label(master=self, text="Username")
@@ -19,18 +21,18 @@ class Login(tk.Frame):
         login_button = ttk.Button(
             self,
             text="Log In",
-            command=lambda: self.validate_and_switch_pages(
+            command=lambda: self._validate_and_switch_pages(
                 controller,
                 username_field.get()
                 )
         )
 
-        title_label.grid(row=0, column=0, columnspan=2)
+        title_label.grid(row=0, column=2, columnspan=3)
 
-        username_label.grid(row=1, column=0)
-        username_field.grid(row=1, column=1)
+        username_label.grid(row=2, column=0)
+        username_field.grid(row=2, column=3)
 
-        login_button.grid(row=3, column=0, columnspan=2)
+        login_button.grid(row=4, column=2, columnspan=3)
 
         create_user_button = ttk.Button(
             self,
@@ -38,9 +40,9 @@ class Login(tk.Frame):
             command=lambda: controller.show_frame(CreateUser)
         )
 
-        create_user_button.grid(row=4, column=0, columnspan=2)
+        create_user_button.grid(row=5, column=2, columnspan=3)
 
-    def validate_and_switch_pages(self, controller, username):
+    def _validate_and_switch_pages(self, controller, username):
         validated_user = controller.validate_login(username)
         if validated_user is not None:
             controller.set_session_user(validated_user)
@@ -52,6 +54,10 @@ class Login(tk.Frame):
 
 
 class CreateUser(tk.Frame):
+
+    """This class contains the elements of the create user frame
+
+    """
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
@@ -61,17 +67,17 @@ class CreateUser(tk.Frame):
 
         username_label = ttk.Label(master=self, text="Username:")
 
-        username_label.grid(row=2, column=0, columnspan=2)
+        username_label.grid(row=2, column=1, columnspan=4)
 
         username_field = ttk.Entry(master=self)
-        username_field.grid(row=2, column=2, columnspan=2)
+        username_field.grid(row=2, column=3, columnspan=4)
 
         username_error_label = None
 
         create_button = ttk.Button(
             self,
             text="Create and sign in",
-            command=lambda: self.create_user_and_switch_page(
+            command=lambda: self._create_user_and_switch_page(
                 controller,
                 username_field.get(),
                 username_error_label,
@@ -80,7 +86,7 @@ class CreateUser(tk.Frame):
 
         create_button.grid(row=4, column=0, columnspan=2)
 
-    def create_user_and_switch_page(
+    def _create_user_and_switch_page(
         self,
         controller,
         username,
@@ -98,6 +104,10 @@ class CreateUser(tk.Frame):
 
 
 class Home(tk.Frame):
+
+    """This class contains the elements of the home frame
+
+    """
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
@@ -106,25 +116,41 @@ class Home(tk.Frame):
             master=self,
             text=f"MyNotes\nHello {controller.session_user.username}")
 
-        title_label.grid(row=0, column=0, columnspan=2)
+        title_label.grid(row=0, column=2, columnspan=4)
 
         create_note_button = ttk.Button(
             self,
             text="New note",
-            command=lambda: controller.show_frame(Note)
+            command=lambda: self.set_session_note_and_switch_page(
+                controller,
+                NoteObject(None, None, None, None)
+                )
         )
 
-        create_note_button.grid(row=3, column=0, columnspan=2)
+        create_note_button.grid(row=3, column=2, columnspan=4)
 
         for idx, note in enumerate(controller.get_notes()):
-            note_label = ttk.Label(
+            note_title_button = ttk.Button(
                 master=self,
-                text=f"{note.title}")
+                text=f"{note.title}",
+                command=lambda note=note: self.set_session_note_and_switch_page(
+                    controller,
+                    note
+                    )
+                )
 
-            note_label.grid(row=(idx + 5), column=0, columnspan=2)
+            note_title_button.grid(row=(idx + 5), column=2, columnspan=4)
+
+    def set_session_note_and_switch_page(self, controller, note):
+        controller.set_session_note(note)
+        controller.show_frame(Note)
 
 
 class Note(tk.Frame):
+
+    """This class contains the elements of the individual note frame
+
+    """
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
@@ -135,7 +161,7 @@ class Note(tk.Frame):
             command=lambda: controller.show_frame(Home)
         )
 
-        back_button.grid(row=0, column=0, columnspan=3)
+        back_button.grid(row=0, column=1, columnspan=3)
 
         save_button = ttk.Button(
             self,
@@ -147,19 +173,40 @@ class Note(tk.Frame):
             )
         )
 
-        save_button.grid(row=0, column=3, columnspan=3)
+        save_button.grid(row=0, column=2)
+
+        delete_button = ttk.Button(
+            self,
+            text='Delete',
+            command=lambda: self.delete_note_and_switch_page(
+                controller
+            )
+        )
+
+        if controller.session_note.title is not None:
+            delete_button.grid(row=5, column=1, columnspan=3)
 
         title_label = ttk.Label(master=self, text="Title")
 
         title_label.grid(row=1, column=0)
 
-        title_field = ttk.Entry(master=self)
+        title_field = ttk.Entry(
+            master=self,
+            )
 
         title_field.grid(row=1, column=1)
 
-        note_field = Text(self, height=5, width=10)
+        note_field = Text(
+            self,
+            height=20,
+            width=40,
+            )
 
         note_field.grid(row=2, column=1)
+
+        if controller.session_note.title is not None and controller.session_note.content is not None:
+            set_text(title_field, controller.session_note.title, 0)
+            set_text(note_field, controller.session_note.content, 1.0)
 
     def create_note_and_switch_page(
         self,
@@ -169,7 +216,26 @@ class Note(tk.Frame):
     ):
         # replace all the "enter" chars with something
         content = content.replace("\n", " ")
-        new_note = write_note_to_file(
-            title, content, controller.session_user.id)
-        controller.set_notes(controller.get_notes().append(new_note))
+
+        note = controller.session_note
+        note.title = title
+        note.content = content
+        note.user_id = controller.session_user.id
+
+        controller.create_or_update_note(note)
         controller.show_frame(Home)
+
+    def delete_note_and_switch_page(
+        self,
+        controller
+    ):
+        note = controller.session_note
+        delete_note_from_file(note)
+        controller.set_session_note(NoteObject(None, None, None, None))
+        controller.set_notes(controller.get_notes().remove(note))
+        controller.show_frame(Home)
+
+
+def set_text(entry, text, entry_index):
+    entry.delete(entry_index, tk.END)
+    entry.insert(entry_index, text)

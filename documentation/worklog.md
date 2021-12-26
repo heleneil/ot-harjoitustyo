@@ -14,4 +14,6 @@
 | 7.12 | 8 | Create user + read from notes.csv |
 | 12.12 | 6 | Creating notes functionality |
 | 14.12 | 6 | Fixing tests + docstring |
-| total | 55.5 |   |
+| 22.12 | 6 | Update note and delete note functionality added |
+| 26.12 | 8 | Refactoring + adding tests |
+| total | 69.5 |   |

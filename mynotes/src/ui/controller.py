@@ -1,6 +1,6 @@
 import tkinter as tk
 from ui.views import Login, CreateUser, Home, Note
-from models.models import User, read_notes_from_file_for_user, read_users_from_file, write_user_to_file
+from models.models import User, Note as NoteObject, read_notes_from_file_for_user, read_users_from_file, update_note_in_file, write_note_to_file, write_user_to_file
 
 HEIGHT = 600
 WIDTH = 400
@@ -13,7 +13,8 @@ class MyNotesApp(tk.Tk):
 
     """
 
-    session_user = User('', '')
+    session_user = User(None, None)
+    session_note = NoteObject(None, None, None, None)
     loaded_notes = []
 
     def __init__(self, *args, **kwargs):
@@ -83,6 +84,20 @@ class MyNotesApp(tk.Tk):
         self.set_session_user(new_user)
         return None
 
+    def set_session_note(self, note):
+        self.session_note = note
+        self.init_frames()
+
+    def create_or_update_note(self, note):
+        if note.id:
+            self.set_notes(self.get_notes().remove(note))
+            note = update_note_in_file(note)
+        else:
+            note = write_note_to_file(note)
+
+        self.set_notes(self.get_notes().append(note))
+        return note
+
     def get_notes(self):
         if self.loaded_notes is None or len(self.loaded_notes) == 0:
             loaded_notes = read_notes_from_file_for_user(self.session_user)
@@ -95,5 +110,5 @@ class MyNotesApp(tk.Tk):
 
 
 def build_my_notes_app():
-    myNotesApp = MyNotesApp()
-    myNotesApp.mainloop()
+    my_notes_app = MyNotesApp()
+    my_notes_app.mainloop()
