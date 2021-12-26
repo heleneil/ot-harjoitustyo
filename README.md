@@ -2,7 +2,7 @@
 
 In the app users can create notes and edit them. To make notes the user must log into their account.
 
-[Release](https://github.com/heleneil/ot-harjoitustyo/releases/tag/viikko5)
+[Latest release](https://github.com/heleneil/ot-harjoitustyo/releases/tag/viikko7)
 
 ## Python version
 
